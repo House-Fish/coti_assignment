@@ -24,8 +24,8 @@ def topo():
     net.addLink(attacker, firewall)  # Attacker -> Firewall
     net.addLink(firewall, dmz)  # Firewall -> DMZ
     net.addLink(web_server, dmz)  # Web Server in DMZ
+    net.addLink(email_server, dmz)  # Email Server in DMZ 
     net.addLink(firewall, internal)  # Firewall -> Internal Zone
-    net.addLink(email_server, internal)  # Email Server in Internal Zone
     net.addLink(user_machine, internal)  # User Machine in Internal Zone
     net.addLink(siem, internal)  # SIEM in Internal Zone
 
