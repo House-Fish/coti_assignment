@@ -1,5 +1,6 @@
 from mininet.topo import Topo
 from mininet.net import Mininet
+from mininet.node import OVSController, Host
 from mininet.cli import CLI
 from mininet.log import setLogLevel, info
 from web_server import start_juice_shop, stop_juice_shop
@@ -43,9 +44,8 @@ class RetailNetwork(Topo):
 
 def run():
     topo = RetailNetwork()
-    net = Mininet(topo=topo)
-
     info("*** Starting network\n")
+    net = Mininet(topo=topo, controller=OVSController)
     net.start()
 
     info("*** Testing connectivity\n")
