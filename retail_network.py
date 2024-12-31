@@ -1,5 +1,6 @@
 from mininet.topo import Topo
 from mininet.net import Mininet
+from mininet.node import OVSController
 from mininet.node import Host
 from mininet.cli import CLI
 from mininet.util import quietRun 
@@ -33,7 +34,7 @@ class RetailNetwork(Topo):
 
 def run():
     topo = RetailNetwork()
-    net = Mininet(topo=topo)
+    net = Mininet(topo=topo, controller=OVSController)
     net.start()
     topo.startServices()
     CLI(net) # Open the Mininet CLI for interaction
