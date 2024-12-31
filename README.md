@@ -19,6 +19,11 @@ Following the [Mininet guide](http://mininet.org/download/) 'Option 3: Installat
 sudo apt install mininet                # Use apt to install mininet
 mn --version                            # Check that it shows 2.3.0
 sudo mn --switch ovsbr --test pingall   # Test if all the switches are working
+
+pip install mininet                           # python dep
+export PYTHONPATH=$PYTHONPATH:/usr/bin/mn     # add to python path
+sudo apt install openvswitch-testcontroller   # fix for controller err
+sudo ln /usr/bin/ovs-testcontroller /usr/bin/controller
 ```
 
 ## Installing Docker
