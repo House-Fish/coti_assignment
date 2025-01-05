@@ -256,6 +256,7 @@ def checkout():
 @login_required
 def process_payment():
     order_id = int(request.form.get('order_id'))
+    total = float(request.form.get('total'))
     card_number = request.form.get('card_number')
     card_expiry = request.form.get('card_expiry')
     card_cvv = request.form.get('card_cvv')
@@ -279,7 +280,8 @@ def process_payment():
     else:
         app.logger.warning(f'Invalid card details provided for order {order_id}')
         flash('Invalid card details. Please try again.')
-        return redirect(url_for('checkout', order_id=order_id))
+        return render_template('payment.html', order_id=order_id, total=total)
+        # return redirect(url_for('checkout', order_id=order_id))
 
 @app.route('/orders')
 @login_required
@@ -288,7 +290,6 @@ def orders_page():
         order for order in orders.values()
         if order['user_id'] == current_user.id
     ]
-    # print(user_orders)
     return render_template('orders.html', user_orders=user_orders)
 
 @app.route('/logout')

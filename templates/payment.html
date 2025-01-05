@@ -20,6 +20,7 @@
                 <h5 class="card-title">Payment Details</h5>
                 <form method="POST" action="{{ url_for('process_payment') }}">
                     <input type="hidden" name="order_id" value="{{ order_id }}">
+                    <input type="hidden" name="total" value="{{ total }}" >
                     <div class="mb-3">
                         <label for="card_number" class="form-label">Card Number</label>
                         <input type="text" class="form-control" id="card_number" name="card_number" required>
