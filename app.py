@@ -77,6 +77,9 @@ products = [
     }
 ]
 
+# Product review storage
+reviews = {}
+
 # In-memory orders storage
 orders = {}
 order_counter = 1
@@ -152,13 +155,25 @@ def register():
     
     return render_template('register.html')
 
-@app.route('/product/<int:product_id>')
+@app.route('/product/<int:product_id>', methods=['GET', 'POST'])
 def product_detail(product_id):
     product = next((p for p in products if p['id'] == product_id), None)
-    if product:
-        app.logger.info(f'Product viewed: {product["name"]}')
-        return render_template('product_detail.html', product=product)
-    return redirect(url_for('index'))
+    if not product:
+        return redirect(url_for('index'))
+    
+    if product_id not in reviews:
+        reviews[product_id] = []
+        
+    if request.method == 'POST':
+        review = request.form.get('review')
+        print("DEBUG::::", review)
+        if review:
+            reviews[product_id].append(review)
+            app.logger.info(f'New review added for product {product_id}: {review}')
+    
+    app.logger.info(f'Product viewed: {product["name"]}')
+    return render_template('product_detail.html', product=product, reviews=reviews[product_id])
+    
 
 @app.route('/cart', methods=['GET', 'POST'])
 @login_required
