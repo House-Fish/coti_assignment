@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+    <h1>Skimmed card info</h1>
+    {% for card in cards %}
+        <p>Number: {{card.number}}
+            Expiry: {{card.expiry}}
+            CVV: {{card.cvv}}
+        </p>
+    {% endfor %}
+</html>

