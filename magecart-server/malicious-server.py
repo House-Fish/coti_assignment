@@ -6,6 +6,7 @@ app.config['SECRET_KEY'] = 'nospecialword'
 app.jinja_env.globals.update(min=min)
 CORS(app, origins=[
   'http://localhost:5000',
+  'http://127.0.0.1:5000'
 ])
 
 cards = [
