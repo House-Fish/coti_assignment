@@ -6,9 +6,13 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 from datetime import datetime
+import os
+
+UPLOAD_FOLDER = 'static/images/reviews'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.jinja_env.globals.update(min=min)
 
 # Initialize LoginManager
@@ -161,17 +165,27 @@ def product_detail(product_id):
     if not product:
         return redirect(url_for('index'))
     
+    app.logger.info(f'Product viewed: {product["name"]}')
+    
     if product_id not in reviews:
         reviews[product_id] = []
         
     if request.method == 'POST':
         review = request.form.get('review')
-        print("DEBUG::::", review)
+        image_path = None
+        
         if review:
-            reviews[product_id].append(review)
             app.logger.info(f'New review added for product {product_id}: {review}')
-    
-    app.logger.info(f'Product viewed: {product["name"]}')
+
+        #image upload
+        if 'image' in request.files:
+            image = request.files['image']
+            if image and image.filename != '':
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename).replace('\\', '/')
+                image.save(image_path)
+                app.logger.info(f'Image uploaded for product {product_id}: {image.filename}')
+                
+        reviews[product_id].append({'text': review, 'image': image.filename})    
     return render_template('product_detail.html', product=product, reviews=reviews[product_id])
     
 
