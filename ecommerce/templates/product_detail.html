@@ -98,7 +98,7 @@
                         <ul class="list-group">
                             {% for review in reviews %}
                             <li class="list-group-item">
-                                <p>{{ review.text, review.image}}</p>
+                                <p>{{ review.text }}</p>
                                 {% if review.image %}
                                 <img src="{{ url_for('static', filename='images/reviews/' + review.image) }}" class="img-fluid mt-2" alt="Review Image">
                                 {% endif %}
