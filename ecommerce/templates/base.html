@@ -10,6 +10,7 @@
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </head>
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('index') }}">E-commerce Store</a>
@@ -64,5 +65,35 @@
     </div>
 
     {% block extra_js %}{% endblock %}
+
+    <!-- check if baddie bots are scanning me 👀 -->
+    <script>
+    (async () => {
+        // Collect browser-based data
+        const isWebDriver = navigator.webdriver || false; // Detect Selenium
+        const plugins = navigator.plugins.length; // Plugin count
+        const resolution = `${screen.width}x${screen.height}`; // Screen resolution
+        const userAgent = navigator.userAgent; // User agent
+        const mouseMoved = !!localStorage.getItem('mouseMoved'); // Detect mouse activity
+
+        // Detect mouse movement and store it
+        document.addEventListener('mousemove', () => {
+            localStorage.setItem('mouseMoved', true);
+        });
+
+        // Send the collected data to the server
+        await fetch('/detect-scraper', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                isWebDriver,
+                plugins,
+                resolution,
+                userAgent,
+                mouseMoved,
+            }),
+        });
+    })();
+    </script>
 </body>
 </html>
