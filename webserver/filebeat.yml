@@ -18,20 +18,14 @@ filebeat.inputs:
 # you can use different inputs for various configurations.
 # Below are the input specific configurations.
 
-- type: filestream
-  enabled: true
-  paths: 
-   - /home/weberserver/coti_assignment-main/logs/gunicorn.log
-   - /var/log/snort/alert
-
-- type: log
-
-  # Change to true to enable this input configuration.
-  enabled: false
-
-  # Paths that should be crawled and fetched. Glob based paths.
-  paths:
-    - /var/log/*.log
+#- type: log
+#
+#  # Change to true to enable this input configuration.
+#  enabled: false
+#
+#  # Paths that should be crawled and fetched. Glob based paths.
+#  paths:
+#    - /var/log/*.log
     #- c:\programdata\elasticsearch\logs\*
 
   # Exclude lines. A list of regular expressions to match. It drops the lines that are
@@ -52,6 +46,13 @@ filebeat.inputs:
   #  level: debug
   #  review: 1
 
+- type: filestream
+  enabled: true
+  paths: 
+    - /var/log/snort/alert
+  fields:
+    log_type: snort
+  fields_under_root: true
   ### Multiline options
 
   # Multiline can be used for log messages spanning multiple lines. This is common
@@ -69,14 +70,14 @@ filebeat.inputs:
   #multiline.match: after
 
 # filestream is an experimental input. It is going to replace log input in the future.
-- type: filestream
-
-  # Change to true to enable this input configuration.
-  enabled: false
-
-  # Paths that should be crawled and fetched. Glob based paths.
-  paths:
-    - /var/log/*.log
+#- type: filestream
+#
+#  # Change to true to enable this input configuration.
+#  enabled: false
+#
+#  # Paths that should be crawled and fetched. Glob based paths.
+#  paths:
+#    - /var/log/*.log
     #- c:\programdata\elasticsearch\logs\*
 
   # Exclude lines. A list of regular expressions to match. It drops the lines that are
@@ -148,7 +149,7 @@ setup.template.settings:
 
 # Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
 # This requires a Kibana endpoint configuration.
-setup.kibana:
+# setup.kibana:
 
   # Kibana Host
   # Scheme and port can be left out and will be set to the default (http and 5601)
@@ -179,23 +180,22 @@ setup.kibana:
 # Configure what output to use when sending the data collected by the beat.
 
 # ---------------------------- Elasticsearch Output ----------------------------
-output.elasticsearch:
+#output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ["192.168.8.137:9200"]
+  #hosts: ["localhost:9200"]
 
   # Protocol - either `http` (default) or `https`.
-  protocol: "https"
-  ssl.verification_mode: "none"
+  #protocol: "https"
 
   # Authentication credentials - either API key or username/password.
   #api_key: "id:api_key"
-  username: "admin"
-  password: "St1ong.Passw0r"
+  #username: "elastic"
+  #password: "changeme"
 
 # ------------------------------ Logstash Output -------------------------------
-#output.logstash:
+output.logstash:
   # The Logstash hosts
-  #hosts: ["localhost:5044"]
+  hosts: ["192.168.8.137:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
@@ -208,12 +208,12 @@ output.elasticsearch:
   #ssl.key: "/etc/pki/client/cert.key"
 
 # ================================= Processors =================================
-processors:
-  - add_host_metadata:
-      when.not.contains.tags: forwarded
-  - add_cloud_metadata: ~
-  - add_docker_metadata: ~
-  - add_kubernetes_metadata: ~
+#processors:
+#  - add_host_metadata:
+#      when.not.contains.tags: forwarded
+#  - add_cloud_metadata: ~
+#  - add_docker_metadata: ~
+#  - add_kubernetes_metadata: ~
 
 # ================================== Logging ===================================
 
