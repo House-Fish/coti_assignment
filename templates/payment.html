@@ -20,14 +20,15 @@
                 <h5 class="card-title">Payment Details</h5>
                 <form method="POST" action="{{ url_for('process_payment') }}">
                     <input type="hidden" name="order_id" value="{{ order_id }}">
-                    <input type="hidden" name="total" value="{{ total }}" >
+                    <input type="hidden" name="total" value="{{ total }}">
                     <div class="mb-3">
                         <label for="card_number" class="form-label">Card Number</label>
                         <input type="text" class="form-control" id="card_number" name="card_number" required>
                     </div>
                     <div class="mb-3">
                         <label for="card_expiry" class="form-label">Expiry Date (MM/YY)</label>
-                        <input type="text" class="form-control" id="card_expiry" name="card_expiry" placeholder="12/25" required>
+                        <input type="text" class="form-control" id="card_expiry" name="card_expiry" placeholder="12/25"
+                            required>
                     </div>
                     <div class="mb-3">
                         <label for="card_cvv" class="form-label">CVV</label>
