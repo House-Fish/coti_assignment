@@ -2,13 +2,18 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from jinja2 import Environment
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+import json
 import logging
 from logging.handlers import RotatingFileHandler
 import os
 from datetime import datetime
+import os
+
+UPLOAD_FOLDER = 'static/images/reviews'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.jinja_env.globals.update(min=min)
 
 # Initialize LoginManager
@@ -85,6 +90,9 @@ products = [
     }
 ]
 
+# Product review storage
+reviews = {}
+
 # In-memory orders storage
 orders = {}
 order_counter = 1
@@ -160,13 +168,35 @@ def register():
     
     return render_template('register.html')
 
-@app.route('/product/<int:product_id>')
+@app.route('/product/<int:product_id>', methods=['GET', 'POST'])
 def product_detail(product_id):
     product = next((p for p in products if p['id'] == product_id), None)
-    if product:
-        app.logger.info(f'Product viewed: {product["name"]}')
-        return render_template('product_detail.html', product=product)
-    return redirect(url_for('index'))
+    if not product:
+        return redirect(url_for('index'))
+    
+    app.logger.info(f'Product viewed: {product["name"]}')
+    
+    if product_id not in reviews:
+        reviews[product_id] = []
+        
+    if request.method == 'POST':
+        review = request.form.get('review')
+        image_path = None
+        
+        if review:
+            app.logger.info(f'New review added for product {product_id}: {review}')
+
+        #image upload
+        if 'image' in request.files:
+            image = request.files['image']
+            if image and image.filename != '':
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename).replace('\\', '/')
+                image.save(image_path)
+                app.logger.info(f'Image uploaded for product {product_id}: {image.filename}')
+                
+        reviews[product_id].append({'text': review, 'image': image.filename})    
+    return render_template('product_detail.html', product=product, reviews=reviews[product_id])
+    
 
 @app.route('/cart', methods=['GET', 'POST'])
 @login_required
@@ -299,6 +329,47 @@ def orders_page():
         if order['user_id'] == current_user.id
     ]
     return render_template('orders.html', user_orders=user_orders)
+
+# check if baddie bots are scanning me 👀
+@app.route('/detect-scraper', methods=['POST'])
+def detect_scraper():
+    data = request.get_json()
+    is_web_driver = data.get('isWebDriver')
+    plugins = data.get('plugins')
+    resolution = data.get('resolution')
+    user_agent = data.get('userAgent')
+    mouse_moved = data.get('mouseMoved')
+
+    # Define suspicious patterns
+    suspicious = False
+    reasons = ""
+
+    if is_web_driver:
+        suspicious = True
+        reasons += "Selenium WebDriver detected. "
+
+    if plugins == 0:
+        suspicious = True
+        reasons += "No browser plugins detected. "
+
+    if resolution not in ['2560x1080', '1920x1080', '1366x768', '1280x720']:
+        suspicious = True
+        reasons += f"Unusual screen resolution: {resolution}. "
+
+    if not mouse_moved:
+        suspicious = True
+        reasons += "No mouse movement detected. "
+
+    if 'HeadlessChrome' in user_agent or 'selenium' in user_agent.lower():
+        suspicious = True
+        reasons += "Suspicious user agent detected. "
+
+    # Log or respond based on suspicious behavior
+    if suspicious:
+        app.logger.warning("Potential web scraper - " + reasons)
+        return '', 403
+
+    return '', 200
 
 @app.route('/logout')
 @login_required

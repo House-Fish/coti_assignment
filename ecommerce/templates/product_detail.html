@@ -89,6 +89,40 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Product Reviews -->
+            <div class="mt-5">
+                <h3 class="h4 mb-4">Product Reviews</h3>
+                <div class="mb-4">
+                    {% if reviews %}
+                        <ul class="list-group">
+                            {% for review in reviews %}
+                            <li class="list-group-item">
+                                <p>{{ review.text }}</p>
+                                {% if review.image %}
+                                <img src="{{ url_for('static', filename='images/reviews/' + review.image) }}" class="img-fluid mt-2" alt="Review Image">
+                                {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
+                    {% endif %}
+                </div>
+            
+                <!-- Review form -->
+                <form method="POST" action="{{ url_for('product_detail', product_id=product.id) }}" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="review" class="form-label">Leave a Review</label>
+                        <textarea class="form-control" id="review" name="review" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Upload Image</label>
+                        <input class="form-control" type="file" id="image" name="image">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
