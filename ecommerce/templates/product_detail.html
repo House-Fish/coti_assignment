@@ -30,39 +30,39 @@
             <div class="mb-4">
                 <p class="lead text-muted">{{ product.description }}</p>
             </div>
-            
+
             <div class="mb-4">
                 <h2 class="h3 text-primary">${{ "%.2f"|format(product.price) }}</h2>
             </div>
 
             {% if product.stock > 0 %}
-                <div class="mb-4">
-                    <span class="badge bg-success">In Stock</span>
-                    <small class="text-muted ms-2">{{ product.stock }} items available</small>
-                </div>
+            <div class="mb-4">
+                <span class="badge bg-success">In Stock</span>
+                <small class="text-muted ms-2">{{ product.stock }} items available</small>
+            </div>
 
-                <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="mb-4">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <select class="form-select" id="quantity" name="quantity">
-                                {% for i in range(1, product.stock + 1) if i <= 10 %}
-                                <option value="{{ i }}">{{ i }}</option>
+            <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="mb-4">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <select class="form-select" id="quantity" name="quantity">
+                            {% for i in range(1, product.stock + 1) if i <= 10 %} <option value="{{ i }}">{{ i }}
+                                </option>
                                 {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col">
-                            <button type="submit" class="btn btn-primary btn-lg mt-4">
-                                Add to Cart
-                            </button>
-                        </div>
+                        </select>
                     </div>
-                </form>
-            {% else %}
-                <div class="mb-4">
-                    <span class="badge bg-danger">Out of Stock</span>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary btn-lg mt-4">
+                            Add to Cart
+                        </button>
+                    </div>
                 </div>
-                <button class="btn btn-primary btn-lg" disabled>Add to Cart</button>
+            </form>
+            {% else %}
+            <div class="mb-4">
+                <span class="badge bg-danger">Out of Stock</span>
+            </div>
+            <button class="btn btn-primary btn-lg" disabled>Add to Cart</button>
             {% endif %}
 
             <!-- Additional Product Information -->
@@ -78,11 +78,11 @@
                                 <strong>Price:</strong> ${{ "%.2f"|format(product.price) }}
                             </li>
                             <li>
-                                <strong>Availability:</strong> 
+                                <strong>Availability:</strong>
                                 {% if product.stock > 0 %}
-                                    <span class="text-success">In Stock ({{ product.stock }} available)</span>
+                                <span class="text-success">In Stock ({{ product.stock }} available)</span>
                                 {% else %}
-                                    <span class="text-danger">Out of Stock</span>
+                                <span class="text-danger">Out of Stock</span>
                                 {% endif %}
                             </li>
                         </ul>
