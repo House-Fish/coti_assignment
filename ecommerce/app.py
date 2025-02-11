@@ -308,7 +308,7 @@ def process_payment():
     
     if is_valid and order_id in orders:
         orders[order_id]['status'] = 'completed'
-        app.logger.info(f'Payment successful for order {order_id} amount: ${total}, user: ${current_user.username}')
+        app.logger.info(f'Payment successful for order {order_id} amount: ${total}, user: {current_user.username}')
         
         # Clear cart
         session.pop('cart', None)
@@ -316,7 +316,7 @@ def process_payment():
         flash('Payment successful! Thank you for your order.')
         return redirect(url_for('orders_page'))
     else:
-        app.logger.warning(f'Invalid card details provided for order: {order_id} amount: ${total} ')
+        app.logger.warning(f'Invalid card details provided for order: {order_id} amount: ${total} for username: {current_user.username}')
         flash('Invalid card details. Please try again.')
         return render_template('payment.html', order_id=order_id, total=total)
         # return redirect(url_for('checkout', order_id=order_id))
