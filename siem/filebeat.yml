@@ -5,22 +5,15 @@ filebeat.inputs:
 - type: filestream
   enabled: true
   paths: 
-    - /var/log/snort/alert
+    - /var/log/mail*.log
   fields:
-    log_type: snort
+    log_type: mail 
 
-  fields_under_root: true
-
-- type: filestream
-  enabled: true
-  paths:
-    - /home/webs/ecommerce/logs/*.log
-  fields:
-    log_type: "webserver"  
   fields_under_root: true
 
 # ============================== Logstash Output ===============================
 output.logstash:
   # The Logstash hosts
   hosts: ["192.168.8.140:5044"]
+
 
