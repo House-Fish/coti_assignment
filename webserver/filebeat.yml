@@ -11,6 +11,14 @@ filebeat.inputs:
 
   fields_under_root: true
 
+- type: filestream
+  enabled: true
+  paths:
+    - /home/webs/ecommerce/logs/*.log
+  fields:
+    log_type: "webserver"  
+  fields_under_root: true
+
 # ============================== Logstash Output ===============================
 output.logstash:
   # The Logstash hosts
