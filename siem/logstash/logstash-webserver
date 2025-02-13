@@ -1,0 +1,56 @@
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  if [log_type] == "webserver" {
+  grok {
+    match => { "message" => "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:log_level}: %{GREEDYDATA:log_message}" }
+  }
+
+  grok {
+    match => {
+      "log_message" => [
+        "Product viewed: %{GREEDYDATA:product_name}",
+        "New review added for product %{NUMBER:product_id}: %{GREEDYDATA:review_content}",
+        "Image uploaded for product %{NUMBER:product_id}: %{GREEDYDATA:image_path}",
+        "Product %{NUMBER:product_id} added to cart by user %{WORD:username}",
+        "Homepage accessed",
+        "User %{WORD:username} logged in successfully",
+        "Failed login attempt for username: %{WORD:username}",
+        "New user registered: %{WORD:username}",
+        "Payment successful for order: %{BASE10NUM:order_id} amount: \$%{NUMBER:amount:float} for username: %{GREEDYDATA:username}",
+        "Invalid card details provided for order: %{BASE10NUM:order_id} amount: \$%{NUMBER:amount:float} for username: %{GREEDYDATA:username}",
+        "Potential web scraper - %{GREEDYDATA:reason}"
+      ]
+    }
+    tag_on_failure => ["_grokparsefailure"]
+  }
+  }
+
+  date {
+    match => [ "timestamp", "yyyy-MM-dd HH:mm:ss,SSS" ]
+    target => "@timestamp"
+  }
+
+  mutate {
+    convert => {
+      "product_id" => "integer"
+    }
+  }
+}
+
+output {
+    if [log_type] == "webserver" {
+      opensearch {
+          hosts => ["https://localhost:9200"]
+          index => "webserver-logs-%{+YYYY.MM.dd}"
+          user => "admin"
+          password => "St1ong.Passw0r"
+          ssl => true
+          ssl_certificate_verification => false
+      }
+  }
+}
