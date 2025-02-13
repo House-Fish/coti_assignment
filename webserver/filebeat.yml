@@ -7,14 +7,13 @@ filebeat.inputs:
   paths: 
     - /var/log/snort/alert
   fields:
-    log_type: snort
-
+    log_type: "snort"
   fields_under_root: true
 
 - type: filestream
   enabled: true
   paths:
-    - /home/webs/ecommerce/logs/*.log
+    - /home/webs/ecommerce/logs/ecommerce.log
   fields:
     log_type: "webserver"  
   fields_under_root: true
