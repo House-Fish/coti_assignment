@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from jinja2 import Environment
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import magic
 import json
 import logging
 from logging.handlers import RotatingFileHandler
@@ -92,6 +94,11 @@ products = [
 
 # Product review storage
 reviews = {}
+
+def allowed_mime_type(file):
+    mime = magic.from_buffer(file.stream.read(2048), mime=True)
+    file.stream.seek(0)
+    return mime in ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'] #content type validation: image files only based on file signature (remove extension dependency)
 
 # In-memory orders storage
 orders = {}
@@ -189,11 +196,14 @@ def product_detail(product_id):
         #image upload
         if 'image' in request.files:
             image = request.files['image']
-            if image and image.filename != '':
-                image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename).replace('\\', '/')
+            if allowed_mime_type(image) and image and image.filename != '':
+                filename = secure_filename(image.filename) #add secure filename
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename).replace('\\', '/')
                 image.save(image_path)
                 app.logger.info(f'Image uploaded for product {product_id}: {image.filename}')
-                
+            else:
+                flash('Invalid image file. Please upload a valid image file.')
+                return redirect(url_for('product_detail', product_id=product_id))  
         reviews[product_id].append({'text': review, 'image': image.filename})    
     return render_template('product_detail.html', product=product, reviews=reviews[product_id])
     
