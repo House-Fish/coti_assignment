@@ -8,8 +8,10 @@ options.binary_location = './chrome-linux64/chrome'
 service = Service('./chromedriver-linux64/chromedriver')
 
 driver = webdriver.Chrome(service=service, options=options)
-driver.get('http://127.0.0.1:8000') # URL that selenium scrapes
 
-print(driver.page_source)
+for i in range(5):
+    driver.get('http://192.168.8.128:8000') # URL that selenium scrapes
+
+# print(driver.page_source)
 
 driver.quit()
