@@ -192,7 +192,7 @@ def product_detail(product_id):
             if image and image.filename != '':
                 image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename).replace('\\', '/')
                 image.save(image_path)
-                app.logger.info(f'Image uploaded for product {product_id}: {image.filename} - md5sum: {hashlib.md5(image.read()).hexdigest()}')
+                app.logger.info(f'Image uploaded for product {product_id}: {image.filename}: md5sum: {hashlib.md5(image.read()).hexdigest()}')
                 
         reviews[product_id].append({'text': review, 'image': image.filename})    
     return render_template('product_detail.html', product=product, reviews=reviews[product_id])
