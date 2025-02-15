@@ -8,7 +8,7 @@
             "ipv4-addr"
         ],
         "source": "https://tap.group-ib.com/api/taxii/v2.0/collections/malware__cnc/objects/",
-        "id": ""
+        "id": "E3yjCpUBTB3m9oMNN6g_"
     },
     "common_ip": {
         "name": "Group IB Common IP",
@@ -18,7 +18,7 @@
             "ipv4-addr"
         ],
         "source": "https://tap.group-ib.com/api/taxii/v2.0/collections/ioc__common__ip/objects/",
-        "id": ""
+        "id": "NHyjCpUBTB3m9oMNOKi7"
     },
     "common_hash": {
         "name": "Group IB Common Hash",
@@ -28,7 +28,7 @@
             "hashes"
         ],
         "source": "https://tap.group-ib.com/api/taxii/v2.0/collections/ioc__common__hash/objects/",
-        "id": ""
+        "id": "RXyjCpUBTB3m9oMNOaiI"
     },
     "scanner_ip": {
         "name": "Group IB IP Scanners",
@@ -38,7 +38,7 @@
             "ipv4-addr"
         ],
         "source": "https://tap.group-ib.com/api/taxii/v2.0/collections/suspicious_ip__scanner/objects/",
-        "id": ""
+        "id": "VnyjCpUBTB3m9oMNOqh3"
     },
     "phishing_spam_ioc": {
         "name": "Alienvault Phishing Spam",
@@ -48,6 +48,16 @@
             "domain-name"
         ],
         "source": "6737cf6c5e3e70a11e77b340",
-        "id": ""
+        "id": "Z3yjCpUBTB3m9oMNO6iB"
+    },
+    "attacks_phishing_group": {
+        "name": "Group IB Phishing Group",
+        "description": "Domains of phishing groups",
+        "filename": "phishing_group_ioc",
+        "types": [
+            "domain-name"
+        ],
+        "source": "https://tap.group-ib.com/api/taxii/v2.0/collections/attacks__phishing_group/objects/",
+        "id": "OHyqCpUBTB3m9oMNWaol"
     }
 }

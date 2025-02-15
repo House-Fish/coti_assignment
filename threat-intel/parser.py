@@ -3,7 +3,11 @@ import requests
 from requests.auth import HTTPBasicAuth
 import re
 from datetime import datetime, timezone
+import os
+from dotenv import load_dotenv
 from OTXv2 import OTXv2
+
+load_dotenv()
 
 def read_file(input_file):
     with open(input_file, 'r') as f:
@@ -29,6 +33,9 @@ def parse_groupib(data, spec_type):
 
             value = matches[1]
            
+            if obj.get("created") == "1-01-01T00:00:00.000000Z":
+                obj["created"] = datetime.now(timezone.utc).isoformat()
+
             # print(spec_type, value)
 
             parsed_obj = {
@@ -138,7 +145,6 @@ def update():
 
         for t in item["types"]:
             if "Alienvault" in item["name"]:
-                # indicators = otx.get_pulse_indicators(item["source"])
                 parsed_stix = parse_alienvault(response, t)
             else: 
                 parsed_stix = parse_groupib(response, t)
@@ -148,16 +154,16 @@ def update():
 PAYLOADS = read_file("payloads.json")
 TEMPLATE = read_file("template.json")
 
-GROUPIB_USERNAME = "<GROUP_IB_USERNAME>"
-GROUPIB_PASSWORD = "<GROUPIB_API_KEY>"
+GROUPIB_USERNAME = os.getenv("GROUPIB_USERNAME")
+GROUPIB_PASSWORD = os.getenv("GROUPIB_PASSWORD")
 
 SIEM_USERNAME = "admin"
 SIEM_PASSWORD = "st1ong.Passw0r"
 SIEM_URL = "https://192.168.8.129:9200/_plugins/_security_analytics/threat_intel/sources/"
-OTX = OTXv2("<ALIENVAULT_OTX_API_KEY>")
+OTX = OTXv2(os.getenv("OTX_API_KEY"))
 
 def run():
-    save_to_file(OTX)
+    # save_to_file(OTX)
     update()
 
 run()

@@ -3,3 +3,10 @@ logs
 __pycache__
 chromedriver-linux64*
 chrome-linux64*
+.env
+ioc_common_hash.json
+ioc_common_ip.json
+malware_cnc.json
+phishing_group_ioc.json
+phishing_spam_ioc.json
+suspicious_ip_scanner.json
