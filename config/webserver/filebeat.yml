@@ -1,0 +1,25 @@
+############################# Filebeat Configuration ###########################
+# ============================== Filebeat inputs ===============================
+
+filebeat.inputs:
+- type: filestream
+  enabled: true
+  paths: 
+    - /var/log/snort/alert
+  fields:
+    log_type: "snort"
+  fields_under_root: true
+
+- type: filestream
+  enabled: true
+  paths:
+    - /home/webs/ecommerce/logs/ecommerce.log
+  fields:
+    log_type: "webserver"  
+  fields_under_root: true
+
+# ============================== Logstash Output ===============================
+output.logstash:
+  # The Logstash hosts
+  hosts: ["192.168.8.129:5044"]
+

@@ -1,0 +1,25 @@
+############################# Filebeat Configuration ###########################
+# ============================== Filebeat inputs ===============================
+
+filebeat.inputs:
+- type: filestream
+  enabled: true
+  paths: 
+    - /var/log/mail*.log
+  fields:
+    log_type: mail 
+  fields_under_root: true
+
+- type: filestream
+  enabled: true
+  paths:
+    - /var/ossec/logs/alerts/alerts.log
+  fields:
+    log_type: ossec
+
+# ============================== Logstash Output ===============================
+output.logstash:
+  # The Logstash hosts
+  hosts: ["192.168.8.140:5044"]
+
+
