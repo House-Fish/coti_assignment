@@ -1,0 +1,53 @@
+{
+    "malware_cnc": {
+        "name": "Group IB Malware CNC",
+        "description": "Addresses of known malware CNC servers",
+        "filename": "malware_cnc",
+        "types": [
+            "domain-name",
+            "ipv4-addr"
+        ],
+        "source": "https://tap.group-ib.com/api/taxii/v2.0/collections/malware__cnc/objects/",
+        "id": "OnxqCpUBTB3m9oMNBENF"
+    },
+    "common_ip": {
+        "name": "Group IB Common IP",
+        "description": "IP addresses of known malicious IPs",
+        "filename": "ioc_common_ip",
+        "types": [
+            "ipv4-addr"
+        ],
+        "source": "https://tap.group-ib.com/api/taxii/v2.0/collections/ioc__common__ip/objects/",
+        "id": "W3xqCpUBTB3m9oMNBkMQ"
+    },
+    "common_hash": {
+        "name": "Group IB Common Hash",
+        "description": "Hashes of known malicious files",
+        "filename": "ioc_common_hash",
+        "types": [
+            "hashes"
+        ],
+        "source": "https://tap.group-ib.com/api/taxii/v2.0/collections/ioc__common__hash/objects/",
+        "id": "bHxqCpUBTB3m9oMNBkPk"
+    },
+    "scanner_ip": {
+        "name": "Group IB IP Scanners",
+        "description": "IP addresses of known scanners",
+        "filename": "suspicious_ip_scanner",
+        "types": [
+            "ipv4-addr"
+        ],
+        "source": "https://tap.group-ib.com/api/taxii/v2.0/collections/suspicious_ip__scanner/objects/",
+        "id": "fXxqCpUBTB3m9oMNB0PQ"
+    },
+    "phishing_spam_ioc": {
+        "name": "Alienvault Phishing Spam",
+        "description": "Addresses of known phishing spam servers",
+        "filename": "phishing_spam_ioc",
+        "types": [
+            "domain-name"
+        ],
+        "source": "6737cf6c5e3e70a11e77b340",
+        "id": "jnxqCpUBTB3m9oMNCUPK"
+    }
+}

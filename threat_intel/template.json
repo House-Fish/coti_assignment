@@ -1,0 +1,15 @@
+{
+    "type": "IOC_UPLOAD",
+    "name": "",
+    "format": "STIX2",
+    "description": "",
+    "store_type": "OS",
+    "enabled": "false",
+    "ioc_types": [],
+    "source": {
+        "ioc_upload": {
+            "file_name": "",
+            "iocs": []
+        }
+    }
+}
